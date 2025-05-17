@@ -1,11 +1,31 @@
 # transcript-edit
 
-do this everytime i start the project (in terminal)
-source venv/bin/activate 
+a simple tool to reformat zoom transcripts -- removing the time stamps, sentence number and names of 1 or more speakers
 
-^then run 
-python transcript_cleaner.py
+For example
+    original transcript: 
 
+        3
+        00:00:30.160 --> 00:00:37.329
+        Speaker: This is a sample sentence. 
 
-^can even run this in terminal at the end
-deactivate
+        4
+        00:00:37.330 --> 00:00:37.830
+        Listener: Sure, sure. 
+
+    after running (with 'Speaker' as name to be removed): 
+        
+        This is a sample sentence. 
+
+        Listener: Sure, sure. 
+
+___________________________________________________
+
+to run: 
+    in transcript_cleaner.py -- update name(s) to be removed (line 46)
+    in transcript.txt -- paste zoom transcript
+
+    (in terminal) 
+    source venv/bin/activate 
+    python transcript_cleaner.py
+

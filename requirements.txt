@@ -1,0 +1,2 @@
+# No external dependencies required as the project only uses Python standard library
+# The 're' module is part of the standard library

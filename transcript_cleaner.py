@@ -9,64 +9,47 @@ def clean_zoom_transcript(transcript):
     # Split the transcript into lines
     lines = transcript.split('\n')
     
-    # Pattern to match lines that start with a name (a letter followed by a colon)
-    pattern = re.compile(r'^[A-Za-z]+:.*')
+    # Remove empty lines, lines that do not contain text, and lines with timestamps
+    cleaned_lines = [line for line in lines if line.strip() and '-->' not in line and not line.strip().isdigit()]
     
-    cleaned_lines = []
-
-    for line in lines:
-        match = pattern.match(line)
-        if match:
-            cleaned_lines.append(line.strip())
-
     # Join cleaned lines with proper formatting
-    cleaned_transcript = '\n\n'.join(cleaned_lines)
+    cleaned_transcript = '\n'.join(cleaned_lines)
     return cleaned_transcript
 
 def remove_names_from_transcript(transcript, names_to_remove):
-    lines = transcript.split('\n\n')
+    # Split the transcript into lines
+    lines = transcript.split('\n')
+    
+    # Initialize an empty list to store lines without the names
     no_name_lines = []
-    current_paragraph = []
 
     for line in lines:
-        # Remove the first word and colon from lines that start with a specified name
+        # Check if the line starts with any of the names to remove
         if any(line.startswith(name + ":") for name in names_to_remove):
-            no_name_line = re.sub(r'^[A-Za-z]+:\s*', '', line)
-            current_paragraph.append(no_name_line)
+            # Remove the name and colon from the line
+            no_name_line = re.sub(r'^[A-Za-z\s]+:\s*', '', line)
+            no_name_lines.append(no_name_line)
         else:
-            if current_paragraph:
-                no_name_lines.append(' '.join(current_paragraph))
-                current_paragraph = []
             no_name_lines.append(line)
 
-    # Append any remaining text
-    if current_paragraph:
-        no_name_lines.append(' '.join(current_paragraph))
-
-    clean_no_name = '\n\n'.join(no_name_lines)
+    clean_no_name = '\n'.join(no_name_lines)
     return clean_no_name
 
 # Path to the transcript file
 file_path = 'data/transcript.txt'
 
-# Read the transcript file
 transcript = read_transcript(file_path)
 
-# Clean the transcript
 cleaned_transcript = clean_zoom_transcript(transcript)
 
-# Print the cleaned transcript (basically don't need this anymore - keep commented out)
-# print("Cleaned Transcript:")
-# print(cleaned_transcript)
-
 # Names to be removed from the transcript
-names_to_remove = ['Elli']  #  specify the names you want to remove
+names_to_remove = ['NAME']  # specify the name(s) you want to remove
 
-# Remove names from the cleaned transcript
 clean_no_name = remove_names_from_transcript(cleaned_transcript, names_to_remove)
 
 print("Transcript without Specified Names:")
 print(clean_no_name)
+
 
 
 
